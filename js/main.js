@@ -1,3 +1,17 @@
+// utility function to help with debouncing
+const debounce = (func, wait) => {
+  let timeout;
+  return function(...args) {
+    if (timeout) clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      func.apply(this, args);
+    }
+    , wait);
+  }
+}
+
+// utility function to set the background image based on the screen width
 const setBackgroundImage = () => {
   const bgContainer = document.querySelector('.root');
   const width = window.innerWidth;
@@ -11,8 +25,14 @@ const setBackgroundImage = () => {
   }
 }
 
+// Set the debounce delay
+const debounceDelay = 200;
+
+// Create a debounced version of the setBackgroundImage function
+const debouncedSetBackgroundImage = debounce(setBackgroundImage, debounceDelay);
+
 // Initial call
 setBackgroundImage();
 
 // Call on resize
-window.addEventListener('resize', setBackgroundImage);
+window.addEventListener('resize', debouncedSetBackgroundImage);
